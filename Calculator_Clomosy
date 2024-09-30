@@ -1,0 +1,928 @@
+var
+MyForm:TCLForm;
+
+ACButton,DeleteButton,PercentageButton,DevideButton,MultipleButton,MinusButton,PlusButton,Button0,Button1,Button2,Button3,Button4,Button5,Button6,Button7,Button8,Button9,CommaButton,eButton,EqualsButton,SqrtButton,FactorialButton,ParenLeftButton,ParenRightButton,ExponentialButton:TClProButton;
+testLayout:TClLayout;
+
+// Kullanıcının girdiği sayıları göstermek için
+testLabel:TCLProLabel; 
+
+// Hesaplama sonucunu göstermek için ResultLabel, işlemi göstermek için OperationLabel tanımlanıyor.
+ResultLabel, OperationLabel:TCLProLabel;
+
+
+
+
+
+// İşlem verisini saklamak için string değeri
+  StringOperationLabel: String;
+
+
+
+// Sayıları saklamak için 2 elemanlı bir float dizisi
+Dizi1: array [1] of float;
+// İşlemleri tutmak için bir string dizisi (4 elemanlı).
+Dizi2: array[0] of string;
+
+
+
+i:Integer;
+
+//tutinteger:Integer;
+//factorialLabel:TCLProLabel;
+//sayi,faktoriyel:Integer;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EKRANA YAZDIRMA İŞLEMİ
+// Bir butona tıklandığında o butonun değerini ekrana yazdırma işlemi
+void ButtonValueClick;
+  var
+    ClickedButton:TClProButton;
+  {
+    ClickedButton=TClProButton(MyForm.Clsender);
+    if(testLabel.text=='0') //Eğer label (ekranda gösterilen metin) sıfır ise, sıfırı temizler.
+    {
+      testLabel.text='';  
+    }
+    // Tıklanan butonun Caption (üzerindeki metin) değeri ekranda gösterilir.
+    testLabel.text=testLabel.text+ClickedButton.Caption
+    //tutinteger=testLabel.text;
+    //ShowMessage(tutinteger);
+    
+    //Clomosy.GlobalVariableInteger=StrToInt(tutinteger);
+    //ShowMessage(Clomosy.GlobalVariableInteger);
+    testLabel.visible=True;
+    ResultLabel.visible=False;
+    OperationLabel.text=StringOperationLabel+testLabel.text;
+    
+    //ShowMessage(Clomosy.GlobalVariableInteger);
+  }
+  
+
+/*
+// faktöriyel
+void FaktoriyelHesapla
+
+{
+faktoriyel = 1;
+sayi=Clomosy.GlobalVariableInteger;
+//ShowMessage(sayi);
+// Faktöriyel hesaplama
+for (i = 1 to sayi)
+faktoriyel = faktoriyel * i;
+//ResultLabel.Caption=faktoriyel;
+//ShowMessage(faktoriyel);
+
+testLabel.text='';
+
+if (factorialLabel == null) {
+  factorialLabel = MyForm.AddNewProLabel(MyForm, 'factorialLabel', '');
+}
+factorialLabel.Text=IntToStr(faktoriyel);
+clComponent.SetupComponent(factorialLabel,'{
+    "MarginTop":260,
+    "MarginRight":180,
+    "Width":180,
+    "Height":40,
+    "TextColor":"#f5428d",
+    "TextSize":20,
+    "TextVerticalAlign":"Center",
+    "TextHorizontalAlign":"Left",
+    "TextBold":"yes"
+  }');
+}
+*/
+  
+
+
+// TAMAMEN SİLME İŞLEMİ
+void ButtonClearClick;
+  
+{
+  testLabel.text='0';
+  OperationLabel.text='';
+  //factorialLabel.visible=false;
+  ResultLabel.visible=false;
+
+/* 
+if (factorialLabel <> nil) 
+{
+    factorialLabel.Free;  // Bileşeni bellekten kaldırır.
+    factorialLabel = nil;  // Bileşeni sıfırlar, tekrar kullanabilmek için.
+}
+*/
+  
+  
+  testLabel.visible=true;
+  Dizi1[0]=0;
+  Dizi1[1]=0;
+  
+
+
+}
+
+
+
+
+// SİLME İŞLEMİ
+void ButtonDeleteClick
+var
+  LengthDelete:Integer;
+  StringDelete:String;
+{
+  StringDelete=testLabel.text;
+  LengthDelete=Length(StringDelete);
+  if (LengthDelete>0)
+  {
+    Delete(StringDelete,LengthDelete,1);
+    testLabel.text=StringDelete;
+    OperationLabel.text=StringOperationLabel+StringDelete;
+  }
+  else
+  {
+    testLabel.text='0';
+    OperationLabel.text=StringOperationLabel;
+  }
+  
+}
+
+
+
+
+
+
+
+
+// SONUÇ İŞLEMİ
+void ButtonResultClick;
+{
+  Dizi1[1]=StrToFloat(testLabel.text); //Label'daki (ekrandaki) değeri float tipe çevirip dizinin ikinci elemanına atar.
+  if(Dizi2[0]=='+')
+  {
+    testLabel.text=FloatToStr(Dizi1[0]+Dizi1[1]);
+    /*clComponent.SetupComponent(PlusButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');*/
+  }
+  else if(Dizi2[0]=='-')
+  {
+    testLabel.text=FloatToStr(Dizi1[0]-Dizi1[1]);
+    /*clComponent.SetupComponent(MinusButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');*/
+  }
+  else if(Dizi2[0]=='/')
+  {
+    testLabel.text=FloatToStr(Dizi1[0]/Dizi1[1]);
+   /* 
+   clComponent.SetupComponent(DevideButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');*/
+  }
+  else if(Dizi2[0]=='x')
+  {
+    testLabel.text=FloatToStr(Dizi1[0]*Dizi1[1]);
+    /*
+    clComponent.SetupComponent(MultipleButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');*/
+  }
+  else if(Dizi2[0]=='^')
+  {
+    testLabel.text=FloatToStr(Dizi1[0]^Dizi1[1]);
+    /*clComponent.SetupComponent(ExponentialButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');*/
+  }
+  
+  
+  StringOperationLabel='';
+  ResultLabel.text='='+testLabel.text; //Sonuç label'ına "=" işaretiyle birlikte sonucu yazdırır.
+  ResultLabel.visible=True;
+  testLabel.visible=False;
+  
+}
+
+
+// OPERATOR İŞLEMİ
+void ButtonOperatorClick
+var
+
+  // kullanıcının butona tıklayıp tıklamadığını anlamak ve tıklanan butona göre işlem yapmak için
+  ClickedButton2:TClProButton;
+{
+/*
+    clComponent.SetupComponent(DeleteButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');
+    
+    clComponent.SetupComponent(DevideButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');
+    
+    clComponent.SetupComponent(MultipleButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');
+    
+    clComponent.SetupComponent(MinusButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');
+    
+    clComponent.SetupComponent(PlusButton,'{
+      "BackgroundColor":"#ed82dd"
+    }');
+*/  
+    testLabel.visible=True;
+    ResultLabel.visible=False;
+    
+    // hangi butonun tetiklendiğini belirler. Yani kullanıcı, hangi butona tıkladıysa, Clsender ile tıklanan butonun bilgisi alınır 
+    // ve TClProButton türüne dönüştürülerek clickedBtn2 değişkenine atanır.
+    ClickedButton2=TClProButton(MyForm.Clsender);
+    
+    Dizi1[0]=StrToFloat(testLabel.text);
+    Dizi2[0]=ClickedButton2.Caption;
+    StringOperationLabel='';
+    StringOperationLabel=testLabel.text+Dizi2[0];
+    OperationLabel.text=StringOperationLabel;
+    testLabel.text='0';
+    
+    /*clComponent.SetupComponent(ClickedButton2,'{
+        "BackgroundColor":"#ffffff"
+    }');*/
+}
+
+
+
+
+
+// KAREKÖK İŞLEMİ
+void ButtonSquareRootClick
+{
+  //OperationLabel.text='Sqrt('+testLabel.text+')';
+  testLabel.text=FloatToStr(Sqrt(StrToFloat(testLabel.text)));
+  OperationLabel.visible=true;
+  
+}
+
+
+
+
+
+
+
+// YÜZDE İŞLEMİ
+// Yüzde Hesaplama Fonksiyonu
+void ButtonPercentageClick
+  // Girilen sayıyı alır ve yüzde hesaplamasını yapar
+var
+  currentValue: Float;
+{
+
+  {
+    currentValue = StrToFloat(testLabel.text);  // Ekrandaki değeri alıp float'a çeviriyoruz
+    currentValue = currentValue / 100;  // Yüzde hesaplaması yapılıyor
+    testLabel.text = FloatToStr(currentValue);  // Sonuç ekrana yazdırılıyor
+    
+    
+    
+    StringOperationLabel='';
+    //ResultLabel.text='='+testLabel.text; //Sonuç label'ına "=" işaretiyle birlikte sonucu yazdırır.
+    ResultLabel.visible=True;
+    testLabel.visible=False;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+  MyForm=TCLForm.Create(Self);
+  MyForm.SetFormColor('#ffffff', '', clGNone);
+  
+  
+  testLayout=MyForm.AddNewLayout(MyForm,'testLayout');
+  testLayout.Align=alBottom;
+  testLayout.Height=600;
+  testLayout.Width=100;
+  
+
+  StringOperationLabel='';
+
+  
+  // Kullanıcının girdiği sayıları göstermek için bir label (etiket) oluşturuluyor.
+  testLabel=MyForm.AddNewProLabel(MyForm, 'testLabel', '0');
+  clComponent.SetupComponent(testLabel,'{
+    "MarginTop":20,
+    "MarginRight":20,
+    "Width":355,
+    "Height":40,
+    "TextColor":"#000000",
+    "TextSize":40,
+    "TextVerticalAlign":"Center",
+    "TextHorizontalAlign":"Left",
+    "TextBold":"yes"
+  }');
+  // Hesaplama sonucunu göstermek için ResultLabel, işlemi göstermek için OperationLabel tanımlanıyor.
+  ResultLabel=MyForm.AddNewProLabel(MyForm, 'ResultLabel', '');
+  clComponent.SetupComponent(ResultLabel,'{
+    "MarginTop":180,
+    "MarginRight":20,
+    "Width":355,
+    "Height":40,
+    "TextColor":"#000000",
+    "TextSize":30,
+    "TextVerticalAlign":"Center",
+    "TextHorizontalAlign":"Left",
+    "TextBold":"yes"
+  }');
+  
+  OperationLabel=MyForm.AddNewProLabel(MyForm, 'OperationLabel', '');
+  clComponent.SetupComponent(OperationLabel,'{
+    "MarginTop":100,
+    "MarginRight":20,
+    "Width":355,
+    "Height":40,
+    "TextColor":"#000000",
+    "TextSize":30,
+    "TextVerticalAlign":"Center",
+    "TextHorizontalAlign":"Left",
+    "TextBold":"yes"
+  }');
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Square Root Button
+  SqrtButton=MyForm.AddNewProButton(testLayout, 'SqrtButton', 'Sqrt');
+  clComponent.SetupComponent(SqrtButton,'{
+    "Caption":"Sqrt",
+    "MarginBottom":250,
+    "MarginRight":287.5,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":20,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+
+  // AC Button
+  ACButton=MyForm.AddNewProButton(testLayout, 'ACButton', 'AC');
+  clComponent.SetupComponent(ACButton,'{
+    "Caption":"AC",
+    "MarginBottom":400,
+    "MarginRight":190,
+    "Width":177.5,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":20,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+
+  // Delete Button
+  DeleteButton=MyForm.AddNewProButton(testLayout, 'DeleteButton', '<--');
+  clComponent.SetupComponent(DeleteButton,'{
+    "Caption":"<--",
+    "MarginBottom":400,
+    "MarginLeft":195,
+    "Width":177.5,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+  // Percentage Button
+  PercentageButton=MyForm.AddNewProButton(testLayout, 'PercentageButton', '%');
+  clComponent.SetupComponent(PercentageButton,'{
+    "Caption":"%",
+    "MarginBottom":250,
+    "MarginLeft":100,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+
+  // Devide Button
+  DevideButton=MyForm.AddNewProButton(testLayout, 'DevideButton', '/');
+  clComponent.SetupComponent(DevideButton,'{
+    "Caption":"/",
+    "MarginBottom":250,
+    "MarginLeft":290,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+
+  // Exponential Button
+  ExponentialButton=MyForm.AddNewProButton(testLayout, 'ExponentialButton', '^');
+  clComponent.SetupComponent(ExponentialButton,'{
+    "Caption":"^",
+    "MarginBottom":250,
+    "MarginRight":95,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+
+  // 7 Button
+  Button7=MyForm.AddNewProButton(testLayout, 'Button7', '7');
+  clComponent.SetupComponent(Button7,'{
+    "Caption":"7",
+    "MarginBottom":100,
+    "MarginRight":287.5,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+  // 8 Button
+  Button8=MyForm.AddNewProButton(testLayout, 'Button8', '8');
+  clComponent.SetupComponent(Button8,'{
+    "Caption":"8",
+    "MarginBottom":100,
+    "MarginRight":95,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+
+// 9 Button
+  Button9=MyForm.AddNewProButton(testLayout, 'Button9', '9');
+  clComponent.SetupComponent(Button9,'{
+    "Caption":"9",
+    "MarginBottom":100,
+    "MarginLeft":100,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+
+// Multiple Button
+  MultipleButton=MyForm.AddNewProButton(testLayout, 'MultipleButton', 'x');
+  clComponent.SetupComponent(MultipleButton,'{
+    "Caption":"x",
+    "MarginBottom":100,
+    "MarginLeft":290,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+/*
+  // Factorial Button
+  FactorialButton=MyForm.AddNewProButton(testLayout, 'FactorialButton', '!');
+  clComponent.SetupComponent(FactorialButton,'{
+    "Caption":"!",
+    "MarginBottom":120,
+    "MarginRight":300,
+    "Width":70,
+    "Height":50,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#ff4a68",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#96683f",
+    "BorderWidth":2,
+    "BackgroundColor":"#3f6f96"
+  }');
+*/
+
+  // 4 Button
+  Button4=MyForm.AddNewProButton(testLayout, 'Button4', '4');
+  clComponent.SetupComponent(Button4,'{
+    "Caption":"4",
+    "MarginTop":50,
+    "MarginRight":287.5,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+
+  // 5 Button
+  Button5=MyForm.AddNewProButton(testLayout, 'Button5', '5');
+  clComponent.SetupComponent(Button5,'{
+    "Caption":"5",
+    "MarginTop":50,
+    "MarginRight":95,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+
+
+// 6 Button
+  Button6=MyForm.AddNewProButton(testLayout, 'Button6', '6');
+  clComponent.SetupComponent(Button6,'{
+    "Caption":"6",
+    "MarginTop":50,
+    "MarginLeft":100,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+
+  // Minus Button
+  MinusButton=MyForm.AddNewProButton(testLayout, 'MinusButton', '-');
+  clComponent.SetupComponent(MinusButton,'{
+    "Caption":"-",
+    "MarginTop":50,
+    "MarginLeft":290,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+/*
+  // Paren Left Button
+  ParenLeftButton=MyForm.AddNewProButton(testLayout, 'ParenLeftButton', '(');
+  clComponent.SetupComponent(ParenLeftButton,'{
+    "Caption":"(",
+    "MarginBottom":0,
+    "MarginRight":300,
+    "Width":70,
+    "Height":50,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#ff4a68",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#96683f",
+    "BorderWidth":2,
+    "BackgroundColor":"#3f6f96"
+  }');
+*/
+
+
+  // 1 Button
+  Button1=MyForm.AddNewProButton(testLayout, 'Button1', '1');
+  clComponent.SetupComponent(Button1,'{
+    "Caption":"1",
+    "MarginTop":200,
+    "MarginRight":287.5,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+
+  // 2 Button
+  Button2=MyForm.AddNewProButton(testLayout, 'Button2', '2');
+  clComponent.SetupComponent(Button2,'{
+    "Caption":"2",
+    "MarginTop":200,
+    "MarginRight":95,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+
+  // 3 Button
+  Button3=MyForm.AddNewProButton(testLayout, 'Button3', '3');
+  clComponent.SetupComponent(Button3,'{
+    "Caption":"3",
+    "MarginTop":200,
+    "MarginLeft":100,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+
+  // Plus Button
+  PlusButton=MyForm.AddNewProButton(testLayout, 'PlusButton', '+');
+  clComponent.SetupComponent(PlusButton,'{
+    "Caption":"+",
+    "MarginTop":200,
+    "MarginLeft":290,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#f07613",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+ /* 
+  // Paren Right Button
+  ParenRightButton=MyForm.AddNewProButton(testLayout, 'ParenRightButton', ')');
+  clComponent.SetupComponent(ParenRightButton,'{
+    "Caption":")",
+    "MarginTop":120,
+    "MarginRight":300,
+    "Width":70,
+    "Height":50,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#ff4a68",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#96683f",
+    "BorderWidth":2,
+    "BackgroundColor":"#3f6f96"
+  }');  
+*/
+
+/*
+  // e Button
+  eButton=MyForm.AddNewProButton(testLayout, 'eButton', 'e');
+  clComponent.SetupComponent(eButton,'{
+    "Caption":"e",
+    "MarginTop":120,
+    "MarginRight":150,
+    "Width":70,
+    "Height":50,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#b5b469",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#96683f",
+    "BorderWidth":2,
+    "BackgroundColor":"#3f6f96"
+  }');  
+*/
+
+
+  // 0 Button
+  Button0=MyForm.AddNewProButton(testLayout, 'Button0', '0');
+  clComponent.SetupComponent(Button0,'{
+    "Caption":"0",
+    "MarginTop":350,
+    "MarginRight":190,
+    "Width":177.5,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');  
+
+  // Comma Button
+  CommaButton=MyForm.AddNewProButton(testLayout, 'CommaButton', ',');
+  clComponent.SetupComponent(CommaButton,'{
+    "Caption":",",
+    "MarginTop":350,
+    "MarginLeft":102.5,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#000000",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#ffffff"
+  }');
+
+
+  // Equals Button
+  EqualsButton=MyForm.AddNewProButton(testLayout, 'EqualsButton', '=');
+  clComponent.SetupComponent(EqualsButton,'{
+    "Caption":"=",
+    "MarginTop":350,
+    "MarginLeft":290,
+    "Width":80,
+    "Height":60,
+    "RoundHeight":10,
+    "RoundWidth":10,
+    "TextColor":"#ffffff",
+    "TextSize":25,
+    "TextBold":"yes",
+    "BorderColor":"#000000",
+    "BorderWidth":2,
+    "BackgroundColor":"#f07613"
+  }');
+
+
+  // Eventler
+  MyForm.AddNewEvent(Button0,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button1,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button2,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button3,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button4,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button5,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button6,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button7,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button8,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(Button9,tbeOnClick,'ButtonValueClick');
+  
+  MyForm.AddNewEvent(CommaButton,tbeOnClick,'ButtonValueClick');
+  
+//  MyForm.AddNewEvent(eButton,tbeOnClick,'ButtonValueClick');
+  
+//  MyForm.AddNewEvent(ParenLeftButton,tbeOnClick,'ButtonValueClick');
+  
+//  MyForm.AddNewEvent(ParenRightButton,tbeOnClick,'ButtonValueClick');  
+  
+  MyForm.AddNewEvent(PercentageButton, tbeOnClick, 'ButtonPercentageClick');
+  
+  MyForm.AddNewEvent(PlusButton,tbeOnClick,'ButtonOperatorClick');
+  
+  MyForm.AddNewEvent(MinusButton,tbeOnClick,'ButtonOperatorClick');
+    
+  MyForm.AddNewEvent(DevideButton,tbeOnClick,'ButtonOperatorClick');
+      
+  MyForm.AddNewEvent(MultipleButton,tbeOnClick,'ButtonOperatorClick');
+        
+  MyForm.AddNewEvent(ExponentialButton,tbeOnClick,'ButtonOperatorClick');
+  
+  MyForm.AddNewEvent(EqualsButton,tbeOnClick,'ButtonResultClick');
+  
+  MyForm.AddNewEvent(ACButton,tbeOnClick,'ButtonClearClick');
+  
+  MyForm.AddNewEvent(DeleteButton,tbeOnClick,'ButtonDeleteClick');
+  
+//  MyForm.AddNewEvent(FactorialButton,tbeOnClick,'FaktoriyelHesapla');
+  
+  MyForm.AddNewEvent(SqrtButton,tbeOnClick,'ButtonSquareRootClick');
+  
+  
+  
+  
+  MyForm.Run;
+  
+}
